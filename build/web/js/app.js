@@ -11161,7 +11161,8 @@ var wrapError = function(onError, model, options) {
     };
 
     MainRouter.prototype.home = function() {
-      return $('body').html(app.views.home.render().el);
+      $('body').html(app.views.home.render().el);
+      return $("#content").append(app.views.userList.render().el);
     };
 
     return MainRouter;
@@ -11295,8 +11296,28 @@ var wrapError = function(onError, model, options) {
     };
   }
   (function() {
+    (function() {
+      var list, _i, _len, _ref;
     
-      __out.push('<a id="add_user" href="#">添加資料</a>\n<table cellspacing="1" cellpadding="1" border="0" style="margin: 0px; display: table;" id="order-list">\n\t<tbody> \n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t    </tr>\n\t</tbody> \n</table>');
+      __out.push('<a id="add_user" href="#">添加資料</a>\n<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">\n\t<tbody> \n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t    </tr>\n\t   ');
+    
+      _ref = this.users;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        list = _ref[_i];
+        __out.push('\n\t      <tr>\n\t\t  \t <td>');
+        __out.push(__sanitize(list.c_author));
+        __out.push('</td>\n\t\t  \t <td>');
+        __out.push(__sanitize(list.c_email));
+        __out.push('</td>\n\t\t  \t <td>');
+        __out.push(__sanitize(list.c_phone));
+        __out.push('</td>\n\t\t  \t <td>');
+        __out.push(__sanitize(list.c_homepage));
+        __out.push('</td>\n\t\t  </tr>\n\t\t');
+      }
+    
+      __out.push('\n\t</tbody> \n</table>');
+    
+    }).call(this);
     
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
@@ -11372,10 +11393,9 @@ var wrapError = function(onError, model, options) {
     }
 
     UserListView.prototype.render = function() {
-      return this.$(this.el).html(userList());
+      this.$(this.el).html(userList());
+      return this;
     };
-
-    UserListView;
 
     return UserListView;
 

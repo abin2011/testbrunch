@@ -1,5 +1,5 @@
 <a id="add_user" href="#">添加資料</a>
-<table cellspacing="1" cellpadding="1" border="0" style="margin: 0px; display: table;" id="order-list">
+<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">
 	<tbody> 
 	    <tr> 
 	        <th>用戶名</th>
@@ -7,5 +7,13 @@
 	        <th>電話</th>
 	        <th>網站</th>
 	    </tr>
+	   <% for list in @users: %>
+	      <tr>
+		  	 <td><%=list.c_author %></td>
+		  	 <td><%=list.c_email %></td>
+		  	 <td><%=list.c_phone %></td>
+		  	 <td><%=list.c_homepage %></td>
+		  </tr>
+		<% end %>
 	</tbody> 
 </table>

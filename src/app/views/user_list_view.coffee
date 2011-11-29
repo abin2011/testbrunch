@@ -3,4 +3,4 @@ userList= require 'templates/user_list'
 class exports.UserListView extends Backbone.View
   render:->
     @$(@el).html userList()
-	  @
+    @
