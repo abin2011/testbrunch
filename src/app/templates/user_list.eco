@@ -1,0 +1,11 @@
+<a id="add_user" href="#">添加資料</a>
+<table cellspacing="1" cellpadding="1" border="0" style="margin: 0px; display: table;" id="order-list">
+	<tbody> 
+	    <tr> 
+	        <th>用戶名</th>
+	        <th>郵箱</th>          
+	        <th>電話</th>
+	        <th>網站</th>
+	    </tr>
+	</tbody> 
+</table>

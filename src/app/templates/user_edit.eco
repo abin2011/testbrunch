@@ -1,0 +1,13 @@
+<div style="padding:10px 0px;" class="" id="comment_post">
+	<form method="POST" id="comment_frm" action="">
+	  <input type="hidden" value="6050" id="c_aid" name="c_aid">
+	  <p>用户名：<input type="text" class="txt" value="" size="30" name="c_author" id="c_author"> (<span class="red">*</span>)</p>
+	  <p>邮&nbsp; &nbsp;箱：<input type="text" class="txt" value="" size="30" name="c_email" id="c_email"> (<span class="red">*</span>)</p>
+	  <p>電&nbsp; &nbsp;話：<input type="text" class="txt" value="" size="30" name="c_phone" id="c_phone"> (<span class="red">*</span>)</p>
+	  <p>网&nbsp; &nbsp;站：<input type="text" class="txt" size="30" value="" name="c_homepage" id="c_homepage"></p>
+	  <div style="padding-left:50px;margin-top:10px;">
+	  	<input type="button" value="提交评论" id="comment_btn" name="comment_btn" style="cursor:pointer;"> 
+	  	<span id="post_msg"></span>
+	  </div>
+	</form>
+</div>
