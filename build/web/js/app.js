@@ -11214,6 +11214,50 @@ var wrapError = function(onError, model, options) {
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
   return __out.join('');
+}}, "templates/user": function(exports, require, module) {module.exports = function(__obj) {
+  if (!__obj) __obj = {};
+  var __out = [], __capture = function(callback) {
+    var out = __out, result;
+    __out = [];
+    callback.call(this);
+    result = __out.join('');
+    __out = out;
+    return __safe(result);
+  }, __sanitize = function(value) {
+    if (value && value.ecoSafe) {
+      return value;
+    } else if (typeof value !== 'undefined' && value != null) {
+      return __escape(value);
+    } else {
+      return '';
+    }
+  }, __safe, __objSafe = __obj.safe, __escape = __obj.escape;
+  __safe = __obj.safe = function(value) {
+    if (value && value.ecoSafe) {
+      return value;
+    } else {
+      if (!(typeof value !== 'undefined' && value != null)) value = '';
+      var result = new String(value);
+      result.ecoSafe = true;
+      return result;
+    }
+  };
+  if (!__escape) {
+    __escape = __obj.escape = function(value) {
+      return ('' + value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    };
+  }
+  (function() {
+    
+    
+    
+  }).call(__obj);
+  __obj.safe = __objSafe, __obj.escape = __escape;
+  return __out.join('');
 }}, "templates/user_edit": function(exports, require, module) {module.exports = function(__obj) {
   if (!__obj) __obj = {};
   var __out = [], __capture = function(callback) {
@@ -11296,28 +11340,8 @@ var wrapError = function(onError, model, options) {
     };
   }
   (function() {
-    (function() {
-      var list, _i, _len, _ref;
     
-      __out.push('<a id="add_user" href="#">添加資料</a>\n<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">\n\t<tbody> \n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t    </tr>\n\t   ');
-    
-      _ref = this.users;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        list = _ref[_i];
-        __out.push('\n\t      <tr>\n\t\t  \t <td>');
-        __out.push(__sanitize(list.c_author));
-        __out.push('</td>\n\t\t  \t <td>');
-        __out.push(__sanitize(list.c_email));
-        __out.push('</td>\n\t\t  \t <td>');
-        __out.push(__sanitize(list.c_phone));
-        __out.push('</td>\n\t\t  \t <td>');
-        __out.push(__sanitize(list.c_homepage));
-        __out.push('</td>\n\t\t  </tr>\n\t\t');
-      }
-    
-      __out.push('\n\t</tbody> \n</table>');
-    
-    }).call(this);
+      __out.push('<a id="add_user" href="#">添加資料</a>\n<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">\n\t<tbody> \n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t    </tr>\n\t</tbody> \n</table>');
     
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
@@ -11349,10 +11373,10 @@ var wrapError = function(onError, model, options) {
 
 }).call(this);
 }, "views/user_edit_view": function(exports, require, module) {(function() {
-  var userEdit;
+  var userEditTemplate;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  userEdit = require('templates/user_edit');
+  userEditTemplate = require('templates/user_edit');
 
   exports.UserListView = (function() {
 
@@ -11368,32 +11392,7 @@ var wrapError = function(onError, model, options) {
     UserListView.prototype.className = 'add-edit';
 
     UserListView.prototype.render = function() {
-      return this.$(this.el).html(userEdit());
-    };
-
-    return UserListView;
-
-  })();
-
-}).call(this);
-}, "views/user_list_view": function(exports, require, module) {(function() {
-  var UserList, userList;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-  userList = require('templates/user_list');
-
-  UserList = require('collections/user_list').UserList;
-
-  exports.UserListView = (function() {
-
-    __extends(UserListView, Backbone.View);
-
-    function UserListView() {
-      UserListView.__super__.constructor.apply(this, arguments);
-    }
-
-    UserListView.prototype.render = function() {
-      this.$(this.el).html(userList());
+      this.$(this.el).html(userEditTemplate());
       return this;
     };
 
@@ -11402,4 +11401,45 @@ var wrapError = function(onError, model, options) {
   })();
 
 }).call(this);
+}, "views/user_list_view": function(exports, require, module) {(function() {
+  var UserList, userListTemplate;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  userListTemplate = require('templates/user_list');
+
+  UserList = require('collections/user_list').UserList;
+
+  exports.UserListView = (function() {
+
+    __extends(UserListView, Backbone.View);
+
+    function UserListView() {
+      this.addOne = __bind(this.addOne, this);
+      this.addAll = __bind(this.addAll, this);
+      UserListView.__super__.constructor.apply(this, arguments);
+    }
+
+    UserListView.prototype.initialize = function() {
+      this.collection.bind('reset', this.addAll);
+      return this.collection.bind('add', this.addOne);
+    };
+
+    UserListView.prototype.render = function() {
+      this.$(this.el).html(userListTemplate());
+      return this;
+    };
+
+    UserListView.prototype.addAll = function() {
+      return this.collection.each;
+    };
+
+    UserListView.prototype.addOne = function(user) {};
+
+    return UserListView;
+
+  })();
+
+}).call(this);
+}, "views/users_view": function(exports, require, module) {
+
 }});

@@ -1,8 +1,9 @@
-userEdit = require 'templates/user_edit'
+userEditTemplate = require 'templates/user_edit'
 
-class exports.UserListView extends Backbone.View
-	tagName:'div'
-	className:'add-edit'
-	render:=>
-		@$(@el).html userEdit()
+class exports.UserEditView extends Backbone.View
+  tagName:'div'
+  className:'add-edit'
+  render:=>
+    @$(@el).html userEditTemplate()
+    @
 			
