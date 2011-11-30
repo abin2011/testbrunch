@@ -11097,7 +11097,7 @@ var wrapError = function(onError, model, options) {
 
 }).call(this);
 }, "main": function(exports, require, module) {(function() {
-  var HomeView, MainRouter, UserEditView, UserList, UserListView;
+  var HomeView, MainRouter, UserAddView, UserList, UserListView;
 
   window.app = {};
 
@@ -11115,7 +11115,7 @@ var wrapError = function(onError, model, options) {
 
   UserListView = require('views/user_list_view').UserListView;
 
-  UserEditView = require('views/user_edit_view').UserEditView;
+  UserAddView = require('views/user_add_view').UserAddView;
 
   UserList = require('collections/user_list').UserList;
 
@@ -11124,11 +11124,10 @@ var wrapError = function(onError, model, options) {
       app.routers.main = new MainRouter();
       app.views.home = new HomeView();
       app.collections.userList = new UserList();
-      app.models.user = new User();
       app.views.userList = new UserListView({
         collection: app.collections.userList
       });
-      app.views.userEdit = new UserEditView({
+      app.views.userAdd = new UserAddView({
         collection: app.collections.userList
       });
       if (Backbone.history.getFragment() === '') {
@@ -11186,7 +11185,7 @@ var wrapError = function(onError, model, options) {
 
     MainRouter.prototype.addUser = function() {
       $('body').html(app.views.home.render().el);
-      return $("#content").append(app.views.userEdit.render().el);
+      return $("#content").append(app.views.userAdd.render().el);
     };
 
     return MainRouter;
@@ -11396,53 +11395,41 @@ var wrapError = function(onError, model, options) {
   })();
 
 }).call(this);
-}, "views/user_edit_view": function(exports, require, module) {(function() {
+}, "views/user_add_view": function(exports, require, module) {(function() {
   var User, userEditTemplate;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; }, _this = this;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   userEditTemplate = require('templates/user_edit');
 
   User = require('models/user').User;
 
-  exports.UserEditView = (function() {
+  exports.UserAddView = (function() {
 
-    __extends(UserEditView, Backbone.View);
+    __extends(UserAddView, Backbone.View);
 
-    function UserEditView() {
+    function UserAddView() {
       this.addUser = __bind(this.addUser, this);
       this.userinfo = __bind(this.userinfo, this);
-      this.modifyUser = __bind(this.modifyUser, this);
       this.render = __bind(this.render, this);
-      UserEditView.__super__.constructor.apply(this, arguments);
+      UserAddView.__super__.constructor.apply(this, arguments);
     }
 
-    UserEditView.prototype.tagName = 'div';
+    UserAddView.prototype.tagName = 'div';
 
-    UserEditView.prototype.className = 'add-edit';
+    UserAddView.prototype.className = 'add-edit';
 
-    UserEditView.prototype.collection = UserEditView.collection;
+    UserAddView.prototype.collection = UserAddView.collection;
 
-    UserEditView.prototype.events = {
-      'click #comment_btn': UserEditView.modifyUser()
+    UserAddView.prototype.events = {
+      'click #comment_btn': 'addUser'
     };
 
-    UserEditView.prototype.render = function() {
+    UserAddView.prototype.render = function() {
       this.$(this.el).html(userEditTemplate());
       return this;
     };
 
-    UserEditView.prototype.modifyUser = function() {
-      var edit_id;
-      edit_id = this.$('#edit_id').val();
-      if (edit_id > 0) {
-        this.editUser();
-      } else {
-        this.addUser();
-      }
-      return app.routers.main.navigate('home', true);
-    };
-
-    UserEditView.prototype.userinfo = function() {
+    UserAddView.prototype.userinfo = function() {
       var c_author, c_email, c_homepage, c_phone, user;
       c_author = this.$('#c_author').val();
       c_email = this.$('#c_email').val();
@@ -11457,23 +11444,16 @@ var wrapError = function(onError, model, options) {
       return user;
     };
 
-    UserEditView.prototype.addUser = function() {
+    UserAddView.prototype.addUser = function() {
       var user;
       user = this.userinfo();
-      return this.collection.add(user);
+      this.collection.add(user);
+      return app.routers.main.navigate('home', true);
     };
 
-    return UserEditView;
+    return UserAddView;
 
   })();
-
-  ({
-    editUser: function() {
-      var user;
-      user = _this.userinfo();
-      return _this.collection.save(user);
-    }
-  });
 
 }).call(this);
 }, "views/user_list_view": function(exports, require, module) {(function() {
@@ -11491,33 +11471,27 @@ var wrapError = function(onError, model, options) {
     __extends(UserListView, Backbone.View);
 
     function UserListView() {
-      this.addOne = __bind(this.addOne, this);
-      this.addAll = __bind(this.addAll, this);
       this.render = __bind(this.render, this);
       UserListView.__super__.constructor.apply(this, arguments);
     }
 
     UserListView.prototype.initialize = function() {
-      this.collection.bind('reset', this.addAll);
-      return this.collection.bind('add', this.addOne);
+      return this.collection.bind('reset', this.render);
     };
 
     UserListView.prototype.render = function() {
-      this.$(this.el).html(userListTemplate());
-      this.addAll;
-      return this;
-    };
-
-    UserListView.prototype.addAll = function() {
-      return this.collection.each(this.addOne);
-    };
-
-    UserListView.prototype.addOne = function(user) {
-      var userView;
-      userView = new UserView({
-        model: user
+      var $el;
+      $el = this.$(this.el);
+      $el.html(userListTemplate());
+      $el.find('#user-list').empty();
+      this.collection.each(function(user) {
+        var userView;
+        userView = new UserView({
+          model: user
+        });
+        return $el.find('#user-list').append(userView.render().el);
       });
-      return this.$(this.el).find('#user-list').append(userView.render().el);
+      return this;
     };
 
     return UserListView;

@@ -17,7 +17,6 @@ $(document).ready ->
     app.routers.main = new MainRouter()
     app.views.home = new HomeView()
     app.collections.userList = new UserList();
-    app.models.user = new User();
     app.views.userList = new UserListView
       collection:app.collections.userList
       

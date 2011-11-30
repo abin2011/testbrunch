@@ -9,6 +9,7 @@ class exports.UserListView extends Backbone.View
   #遍歷循環所有的users#
   render: =>
     $el = @$(@el)
+    $el.html userListTemplate()
     $el.find('#user-list').empty()
     @collection.each (user) ->
       userView = new UserView

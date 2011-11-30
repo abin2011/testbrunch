@@ -7,4 +7,4 @@ class exports.MainRouter extends Backbone.Router
     $("#content").append app.views.userList.render().el
   addUser:->
     $('body').html app.views.home.render().el
-    $("#content").append app.views.userEdit.render().el
+    $("#content").append app.views.userAdd.render().el
