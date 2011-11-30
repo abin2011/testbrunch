@@ -1,10 +1,10 @@
-<% if @users.length: %>
+<% if @users %>
  <% for list in @user: %>
-  	 <td><%=list.c_author %></td>
-  	 <td><%=list.c_email %></td>
-  	 <td><%=list.c_phone %></td>
-  	 <td><%=list.c_homepage %></td>
+  	 <td><%=list.author %></td>
+  	 <td><%=list.email %></td>
+  	 <td><%=list.phone %></td>
+  	 <td><%=list.homepage %></td>
  <% end %>
-<% else: %>	
+<% else %>	
     <td colspan="4">暫無數據!</td>	
 <% end %>

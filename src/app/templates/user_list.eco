@@ -1,12 +1,15 @@
 <a id="add_user" href="#add-user">添加資料</a>
-<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">
-	<tbody> 
-	    <tr id="user_list_header"> 
+<table border="1">
+	 <thead>
+	    <tr> 
 	        <th>用戶名</th>
 	        <th>郵箱</th>          
 	        <th>電話</th>
 	        <th>網站</th>
 	        <th>操作</th>
 	    </tr>
+	 </thead>
+	<tbody id="user-list">
+	  
 	</tbody> 
 </table>

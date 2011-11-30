@@ -11089,7 +11089,7 @@ var wrapError = function(onError, model, options) {
       UserList.__super__.constructor.apply(this, arguments);
     }
 
-    UserList.prototype.model = UserList.model;
+    UserList.prototype.model = User;
 
     return UserList;
 
@@ -11097,7 +11097,7 @@ var wrapError = function(onError, model, options) {
 
 }).call(this);
 }, "main": function(exports, require, module) {(function() {
-  var HomeView, MainRouter, UserListView;
+  var HomeView, MainRouter, UserEditView, UserList, UserListView;
 
   window.app = {};
 
@@ -11115,11 +11115,22 @@ var wrapError = function(onError, model, options) {
 
   UserListView = require('views/user_list_view').UserListView;
 
+  UserEditView = require('views/user_edit_view').UserEditView;
+
+  UserList = require('collections/user_list').UserList;
+
   $(document).ready(function() {
     app.initialize = function() {
       app.routers.main = new MainRouter();
       app.views.home = new HomeView();
-      app.views.userList = new UserListView();
+      app.collections.userList = new UserList();
+      app.models.user = new User();
+      app.views.userList = new UserListView({
+        collection: app.collections.userList
+      });
+      app.views.userEdit = new UserEditView({
+        collection: app.collections.userList
+      });
       if (Backbone.history.getFragment() === '') {
         return app.routers.main.navigate('home', true);
       }
@@ -11140,6 +11151,13 @@ var wrapError = function(onError, model, options) {
       User.__super__.constructor.apply(this, arguments);
     }
 
+    User.prototype["default"] = {
+      'c_author': 'author',
+      'c_email': 'email',
+      'c_phone': 'phone',
+      'c_homepage': 'homepage'
+    };
+
     return User;
 
   })();
@@ -11157,12 +11175,18 @@ var wrapError = function(onError, model, options) {
     }
 
     MainRouter.prototype.routes = {
-      "home": "home"
+      "home": "home",
+      "add-user": "addUser"
     };
 
     MainRouter.prototype.home = function() {
       $('body').html(app.views.home.render().el);
       return $("#content").append(app.views.userList.render().el);
+    };
+
+    MainRouter.prototype.addUser = function() {
+      $('body').html(app.views.home.render().el);
+      return $("#content").append(app.views.userEdit.render().el);
     };
 
     return MainRouter;
@@ -11253,7 +11277,7 @@ var wrapError = function(onError, model, options) {
   }
   (function() {
     
-    
+      __out.push('<td colspan="5">暫無數據!</td>\t\n ');
     
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
@@ -11297,7 +11321,7 @@ var wrapError = function(onError, model, options) {
   }
   (function() {
     
-      __out.push('<div style="padding:10px 0px;" class="" id="comment_post">\n\t<form method="POST" id="comment_frm" action="">\n\t  <input type="hidden" value="6050" id="c_aid" name="c_aid">\n\t  <p>用户名：<input type="text" class="txt" value="" size="30" name="c_author" id="c_author"> (<span class="red">*</span>)</p>\n\t  <p>邮&nbsp; &nbsp;箱：<input type="text" class="txt" value="" size="30" name="c_email" id="c_email"> (<span class="red">*</span>)</p>\n\t  <p>電&nbsp; &nbsp;話：<input type="text" class="txt" value="" size="30" name="c_phone" id="c_phone"> (<span class="red">*</span>)</p>\n\t  <p>网&nbsp; &nbsp;站：<input type="text" class="txt" size="30" value="" name="c_homepage" id="c_homepage"></p>\n\t  <div style="padding-left:50px;margin-top:10px;">\n\t  \t<input type="button" value="提交评论" id="comment_btn" name="comment_btn" style="cursor:pointer;"> \n\t  \t<span id="post_msg"></span>\n\t  </div>\n\t</form>\n</div>');
+      __out.push('<a href="#home">返回列表</a>\n<div style="padding:10px 0px;" class="" id="comment_post">\n\t<form method="POST" id="comment_frm" action="">\n\t  <input type="hidden" value="" id="edit_id" name="edit_id">\n\t  <p>用户名：<input type="text" class="txt" size="30" name="c_author" id="c_author"> (<span class="red">*</span>)</p>\n\t  <p>邮&nbsp; &nbsp;箱：<input type="text" class="txt" size="30" name="c_email" id="c_email"> (<span class="red">*</span>)</p>\n\t  <p>電&nbsp; &nbsp;話：<input type="text" class="txt"  size="30" name="c_phone" id="c_phone"> (<span class="red">*</span>)</p>\n\t  <p>网&nbsp; &nbsp;站：<input type="text" class="txt" size="30" name="c_homepage" id="c_homepage"></p>\n\t  <div style="padding-left:50px;margin-top:10px;">\n\t  \t<input type="button" value="保存資料" id="comment_btn" name="comment_btn" style="cursor:pointer;"> \n\t  \t<span id="post_msg"></span>\n\t  </div>\n\t</form>\n</div>');
     
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
@@ -11341,7 +11365,7 @@ var wrapError = function(onError, model, options) {
   }
   (function() {
     
-      __out.push('<a id="add_user" href="#">添加資料</a>\n<table cellspacing="0" cellpadding="0" border="1" style="margin: 0px; display: table;" id="order-list">\n\t<tbody> \n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t    </tr>\n\t</tbody> \n</table>');
+      __out.push('<a id="add_user" href="#add-user">添加資料</a>\n<table border="1">\n\t <thead>\n\t    <tr> \n\t        <th>用戶名</th>\n\t        <th>郵箱</th>          \n\t        <th>電話</th>\n\t        <th>網站</th>\n\t        <th>操作</th>\n\t    </tr>\n\t </thead>\n\t<tbody id="user-list">\n\t  \n\t</tbody> \n</table>');
     
   }).call(__obj);
   __obj.safe = __objSafe, __obj.escape = __escape;
@@ -11373,41 +11397,94 @@ var wrapError = function(onError, model, options) {
 
 }).call(this);
 }, "views/user_edit_view": function(exports, require, module) {(function() {
-  var userEditTemplate;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var User, userEditTemplate;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; }, _this = this;
 
   userEditTemplate = require('templates/user_edit');
 
-  exports.UserListView = (function() {
+  User = require('models/user').User;
 
-    __extends(UserListView, Backbone.View);
+  exports.UserEditView = (function() {
 
-    function UserListView() {
+    __extends(UserEditView, Backbone.View);
+
+    function UserEditView() {
+      this.addUser = __bind(this.addUser, this);
+      this.userinfo = __bind(this.userinfo, this);
+      this.modifyUser = __bind(this.modifyUser, this);
       this.render = __bind(this.render, this);
-      UserListView.__super__.constructor.apply(this, arguments);
+      UserEditView.__super__.constructor.apply(this, arguments);
     }
 
-    UserListView.prototype.tagName = 'div';
+    UserEditView.prototype.tagName = 'div';
 
-    UserListView.prototype.className = 'add-edit';
+    UserEditView.prototype.className = 'add-edit';
 
-    UserListView.prototype.render = function() {
+    UserEditView.prototype.collection = UserEditView.collection;
+
+    UserEditView.prototype.events = {
+      'click #comment_btn': UserEditView.modifyUser()
+    };
+
+    UserEditView.prototype.render = function() {
       this.$(this.el).html(userEditTemplate());
       return this;
     };
 
-    return UserListView;
+    UserEditView.prototype.modifyUser = function() {
+      var edit_id;
+      edit_id = this.$('#edit_id').val();
+      if (edit_id > 0) {
+        this.editUser();
+      } else {
+        this.addUser();
+      }
+      return app.routers.main.navigate('home', true);
+    };
+
+    UserEditView.prototype.userinfo = function() {
+      var c_author, c_email, c_homepage, c_phone, user;
+      c_author = this.$('#c_author').val();
+      c_email = this.$('#c_email').val();
+      c_phone = this.$('#c_phone').val();
+      c_homepage = this.$('#c_homepage').val();
+      user = new User({
+        'author': c_author,
+        'email': c_email,
+        'phone': c_phone,
+        'homepage': c_homepage
+      });
+      return user;
+    };
+
+    UserEditView.prototype.addUser = function() {
+      var user;
+      user = this.userinfo();
+      return this.collection.add(user);
+    };
+
+    return UserEditView;
 
   })();
 
+  ({
+    editUser: function() {
+      var user;
+      user = _this.userinfo();
+      return _this.collection.save(user);
+    }
+  });
+
 }).call(this);
 }, "views/user_list_view": function(exports, require, module) {(function() {
-  var UserList, userListTemplate;
+  var UserList, UserView, userListTemplate;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   userListTemplate = require('templates/user_list');
 
   UserList = require('collections/user_list').UserList;
+
+  UserView = require('views/user_view').UserView;
 
   exports.UserListView = (function() {
 
@@ -11416,6 +11493,7 @@ var wrapError = function(onError, model, options) {
     function UserListView() {
       this.addOne = __bind(this.addOne, this);
       this.addAll = __bind(this.addAll, this);
+      this.render = __bind(this.render, this);
       UserListView.__super__.constructor.apply(this, arguments);
     }
 
@@ -11426,20 +11504,75 @@ var wrapError = function(onError, model, options) {
 
     UserListView.prototype.render = function() {
       this.$(this.el).html(userListTemplate());
+      this.addAll;
       return this;
     };
 
     UserListView.prototype.addAll = function() {
-      return this.collection.each;
+      return this.collection.each(this.addOne);
     };
 
-    UserListView.prototype.addOne = function(user) {};
+    UserListView.prototype.addOne = function(user) {
+      var userView;
+      userView = new UserView({
+        model: user
+      });
+      return this.$(this.el).find('#user-list').append(userView.render().el);
+    };
 
     return UserListView;
 
   })();
 
 }).call(this);
-}, "views/users_view": function(exports, require, module) {
+}, "views/user_view": function(exports, require, module) {(function() {
+  var User_model, userTemplates;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
+  userTemplates = require('templates/user');
+
+  User_model = require('models/user').User_model;
+
+  exports.UserView = (function() {
+
+    __extends(UserView, Backbone.View);
+
+    function UserView() {
+      this.userEdit = __bind(this.userEdit, this);
+      this.userDelete = __bind(this.userDelete, this);
+      this.render = __bind(this.render, this);
+      UserView.__super__.constructor.apply(this, arguments);
+    }
+
+    UserView.prototype.tagName = 'tr';
+
+    UserView.prototype.className = 'user-list';
+
+    UserView.prototype.events = {
+      'click .user-delete': 'userDelete',
+      'click .user-edit': 'userEdit'
+    };
+
+    UserView.prototype.initialize = function() {
+      return this.model.bind('change', this.render);
+    };
+
+    UserView.prototype.render = function() {
+      this.$(this.el).html(userTemplates(this.model.toJSON()));
+      return this;
+    };
+
+    UserView.prototype.userDelete = function() {
+      return this.model.clear();
+    };
+
+    UserView.prototype.userEdit = function() {
+      return alert('this is user edit');
+    };
+
+    return UserView;
+
+  })();
+
+}).call(this);
 }});
