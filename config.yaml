@@ -4,3 +4,8 @@ dependencies:
   - underscore-1.1.7.js
   - backbone-0.5.3.js
   - backbone-crack.js
+  - form2js.js
+  - jquery.toObject.js
+  
+  
+  

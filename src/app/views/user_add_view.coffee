@@ -11,15 +11,10 @@ class exports.UserAddView extends Backbone.View
     @   
   #獲取數據#
   userinfo:=>
-       c_author = @$('#c_author').val()
-       c_email = @$('#c_email').val()
-       c_phone = @$('#c_phone').val()
-       c_homepage = @$('#c_homepage').val()
-       user=new User
-          'author':c_author
-          'email':c_email
-          'phone':c_phone
-          'homepage':c_homepage
+       #user_json=form2js(@$('#comment_frm'));
+       user_json=@$('#comment_frm').toObject();
+       console.log "asdasdads====#{user_json}"
+       user=new User user_json
        return user
   #新增#    
   addUser:=>
