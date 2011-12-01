@@ -1,3 +1,5 @@
+{UserAddView} = require 'views/user_add_view'
+
 class exports.MainRouter extends Backbone.Router
   routes :
     "home": "home"
@@ -7,4 +9,6 @@ class exports.MainRouter extends Backbone.Router
     $("#content").append app.views.userList.render().el
   addUser:->
     $('body').html app.views.home.render().el
+    app.views.userAdd = new UserAddView
+      collection:app.collections.userList
     $("#content").append app.views.userAdd.render().el

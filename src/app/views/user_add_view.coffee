@@ -18,6 +18,7 @@ class exports.UserAddView extends Backbone.View
        return user
   #新增#    
   addUser:=>
+    alert 'oh yes!!!'
     user=@userinfo()
     @collection.add user
     app.routers.main.navigate 'home', true

@@ -8,7 +8,7 @@ MainRouter = require('routers/main_router').MainRouter
 HomeView = require('views/home_view').HomeView
 
 {UserListView} = require 'views/user_list_view'
-{UserAddView} = require 'views/user_add_view'
+
 {UserList} = require 'collections/user_list'
 
 # app bootstrapping on document ready
@@ -18,9 +18,6 @@ $(document).ready ->
     app.views.home = new HomeView()
     app.collections.userList = new UserList();
     app.views.userList = new UserListView
-      collection:app.collections.userList
-      
-    app.views.userAdd = new UserAddView
       collection:app.collections.userList
     app.routers.main.navigate 'home', true if Backbone.history.getFragment() is ''
   app.initialize()
