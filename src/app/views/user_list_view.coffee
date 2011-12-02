@@ -4,7 +4,7 @@ class exports.UserListView extends Backbone.View
   
   initialize:->
     @collection.bind 'reset',@render
-    @collection.bind 'change', @render
+    @collection.bind 'remove', @render
   #遍歷循環所有的users#
   render: =>
     $el = @$(@el)

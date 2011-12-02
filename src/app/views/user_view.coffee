@@ -1,13 +1,14 @@
 userTemplates= require 'templates/user'
 {User_model}= require 'models/user'
 class exports.UserView extends Backbone.View
-  tagName:'tr'
-  className:'user-list'
+  tagName : 'tr'
+  className : 'user-list'
   events:
-    'click .user-delete':'userDelete'
-    'click .user-edit':'userEdit'
-  initialize: ->
-    @model.bind('change', @render)
+    'click .user-delete' : 'userDelete'
+    'click .user-edit' : 'userEdit'
+  initialize: =>
+    @model.bind 'change', @render
+    @model.bind 'remove', @remove
   render:=>
     @$(@el).html userTemplates @model.toJSON()
     @

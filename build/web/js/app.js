@@ -12177,7 +12177,7 @@ var js2form = (function()
 
     UserListView.prototype.initialize = function() {
       this.collection.bind('reset', this.render);
-      return this.collection.bind('change', this.render);
+      return this.collection.bind('remove', this.render);
     };
 
     UserListView.prototype.render = function() {
@@ -12216,6 +12216,7 @@ var js2form = (function()
       this.userEdit = __bind(this.userEdit, this);
       this.userDelete = __bind(this.userDelete, this);
       this.render = __bind(this.render, this);
+      this.initialize = __bind(this.initialize, this);
       UserView.__super__.constructor.apply(this, arguments);
     }
 
@@ -12229,7 +12230,8 @@ var js2form = (function()
     };
 
     UserView.prototype.initialize = function() {
-      return this.model.bind('change', this.render);
+      this.model.bind('change', this.render);
+      return this.model.bind('remove', this.remove);
     };
 
     UserView.prototype.render = function() {
