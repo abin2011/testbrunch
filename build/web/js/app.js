@@ -11884,10 +11884,10 @@ var js2form = (function()
 
     MainRouter.prototype.addUser = function() {
       $('body').html(app.views.home.render().el);
-      app.views.userAdd = new UserAddView({
+      app.views.userAddView = new UserAddView({
         collection: app.collections.userList
       });
-      return $("#content").append(app.views.userAdd.render().el);
+      return $("#content").append(app.views.userAddView.render().el);
     };
 
     return MainRouter;
@@ -11987,9 +11987,7 @@ var js2form = (function()
         __out.push(__sanitize(this.phone));
         __out.push('</td>\n  \t <td>');
         __out.push(__sanitize(this.homepage));
-        __out.push('</td>\n');
-      } else {
-        __out.push('\t\n    <td colspan="4">暫無數據!</td>\t\n');
+        __out.push('</td>\n  \t <td>\n  \t    <a href="#" class="user-delete">刪除</a>\n  \t     <a href="#" class="user-edit">修改</a>\n  \t </td>\t\n');
       }
     
   }).call(__obj);
@@ -12132,8 +12130,6 @@ var js2form = (function()
 
     UserAddView.prototype.className = 'add-edit';
 
-    UserAddView.prototype.collection = UserAddView.collection;
-
     UserAddView.prototype.events = {
       'click #comment_btn': 'addUser'
     };
@@ -12146,14 +12142,12 @@ var js2form = (function()
     UserAddView.prototype.userinfo = function() {
       var user, user_json;
       user_json = this.$('#comment_frm').toObject();
-      console.log("asdasdads====" + user_json);
       user = new User(user_json);
       return user;
     };
 
     UserAddView.prototype.addUser = function() {
       var user;
-      alert('oh yes!!!');
       user = this.userinfo();
       this.collection.add(user);
       return app.routers.main.navigate('home', true);
@@ -12165,12 +12159,10 @@ var js2form = (function()
 
 }).call(this);
 }, "views/user_list_view": function(exports, require, module) {(function() {
-  var UserList, UserView, userListTemplate;
+  var UserView, userListTemplate;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   userListTemplate = require('templates/user_list');
-
-  UserList = require('collections/user_list').UserList;
 
   UserView = require('views/user_view').UserView;
 
@@ -12184,7 +12176,8 @@ var js2form = (function()
     }
 
     UserListView.prototype.initialize = function() {
-      return this.collection.bind('reset', this.render);
+      this.collection.bind('reset', this.render);
+      return this.collection.bind('change', this.render);
     };
 
     UserListView.prototype.render = function() {
@@ -12245,12 +12238,11 @@ var js2form = (function()
     };
 
     UserView.prototype.userDelete = function() {
-      return this.model.clear();
+      if (confirm('您確定要刪除嗎?')) this.model.collection.remove(this.model);
+      return false;
     };
 
-    UserView.prototype.userEdit = function() {
-      return alert('this is user edit');
-    };
+    UserView.prototype.userEdit = function() {};
 
     return UserView;
 

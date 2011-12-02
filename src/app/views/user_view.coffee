@@ -14,8 +14,10 @@ class exports.UserView extends Backbone.View
     
   #刪除單個信息#
   userDelete:=>
-    @model.clear()
+    if(confirm '您確定要刪除嗎?')
+        @model.collection.remove @model
+    return false
     
   #編輯#
   userEdit:=>
-    alert 'this is user edit'
+    

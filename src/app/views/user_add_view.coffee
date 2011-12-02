@@ -1,24 +1,20 @@
 userEditTemplate = require 'templates/user_edit'
 {User} = require 'models/user'
 class exports.UserAddView extends Backbone.View
-  tagName:'div'
-  className:'add-edit'
-  collection:@collection
+  tagName : 'div'
+  className : 'add-edit'
   events:
-    'click #comment_btn':'addUser'
+    'click #comment_btn' : 'addUser'
   render:=>
     @$(@el).html userEditTemplate()
     @   
   #獲取數據#
   userinfo:=>
-       #user_json=form2js(@$('#comment_frm'));
-       user_json=@$('#comment_frm').toObject();
-       console.log "asdasdads====#{user_json}"
+       user_json=@$('#comment_frm').toObject()
        user=new User user_json
        return user
   #新增#    
   addUser:=>
-    alert 'oh yes!!!'
     user=@userinfo()
     @collection.add user
     app.routers.main.navigate 'home', true

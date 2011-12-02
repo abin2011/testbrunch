@@ -1,11 +1,10 @@
 userListTemplate= require 'templates/user_list'
-{UserList} = require 'collections/user_list'
 {UserView} = require 'views/user_view'
 class exports.UserListView extends Backbone.View
   
   initialize:->
     @collection.bind 'reset',@render
-
+    @collection.bind 'change', @render
   #遍歷循環所有的users#
   render: =>
     $el = @$(@el)
